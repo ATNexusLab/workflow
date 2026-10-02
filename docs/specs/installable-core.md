@@ -110,6 +110,7 @@ No other frontmatter field is canonical. A field only one harness reads comes fr
 | `version` | string | Yes | `0.1.0` |
 | `description` | string | Yes | `A development workflow for coding agents: skills, a command for each step of the development loop, and a read-only verifier.` |
 | `author.name` | string | Yes | `ATNexusLab` |
+| `license` | string | Yes | `MIT`, the license of the repository's `LICENSE` |
 | `repository` | string | Yes | `https://github.com/ATNexusLab/workflow` |
 
 **`.claude-plugin/marketplace.json`** — authored at the root, where Claude Code requires it.
