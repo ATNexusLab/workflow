@@ -95,7 +95,7 @@ README.md
 | --- | --- | --- | --- | --- |
 | `skills/<name>/SKILL.md` | `name` | string | Yes | The directory name |
 | `skills/<name>/SKILL.md` | `description` | string | Yes | The baseline's, unchanged |
-| `commands/<name>.md` | `description` | string | Yes | The baseline's, except `closeout` and `pr-review` (rules 9 and 10) |
+| `commands/<name>.md` | `description` | string | Yes | The baseline's, except `closeout`, `pr-review`, and `bootstrap` (rules 9, 10, and 13) |
 | `commands/<name>.md` | `argument-hint` | string | Yes | The baseline's, except `pr-review` (rule 10) |
 | `agents/adversarial-verifier.md` | `name` | string | Yes | `adversarial-verifier` |
 | `agents/adversarial-verifier.md` | `description` | string | Yes | The baseline's, unchanged |
@@ -288,7 +288,7 @@ Each of the 23 pieces carries the text of baseline `519cc2a`, with these changes
 | `adversarial-verifier` | `tools` moves to the adapter; "Use `Bash` for read-only evidence" becomes "Run commands for read-only evidence" |
 | `audit` | `` `general-purpose` ``, `/security-review`, and `/code-review` become terms |
 | `pr-review` | `` `general-purpose` `` becomes a term |
-| `bootstrap` | The sentence on area files, the step 0 passage on instruction files, and "the **Explore** agent" become terms. The step 0 heading reads "An `AGENTS.md`, or an instruction file of the harness's own, already exists" |
+| `bootstrap` | The sentence on area files, the step 0 passage on instruction files, and "the **Explore** agent" become terms. The step 0 heading reads "An `AGENTS.md`, or an instruction file of the harness's own, already exists". A license step is added (rule 13) |
 | `spec` | The example `.claude/context/` is removed from "Where specs live" |
 | `closeout` | Step 5 "Memory" and the `Memory` line of the output block are removed. The description becomes `Check what the delivery gate does not — surfaces, docs, traceability, security debt — before the commit` |
 | `pr-review`, `spec-writing`, `spec`, `epic` | Translated (rule 10) |
@@ -354,7 +354,31 @@ Scenarios: 22, 23.
 
 Scenarios: 24, 25.
 
-### 13. Persistence and audit
+### 13. `bootstrap` settles the license
+
+The baseline's `bootstrap` never asks about a license. The carried command does:
+
+- The command produces a fifth thing: the repo's `LICENSE`, or the recorded decision to have none. Its
+  description becomes
+  `Set up this repo for the workflow — its AGENTS.md, GitHub Project, .vscode/, global docs, and license`.
+- The license and the copyright holder are settled in step 2, with the other setup decisions. Both are
+  the choice of whoever runs the command: it never picks them and never carries them over from another
+  repository.
+- A `License` step is added after `Docs`, and the later steps are renumbered:
+  - A `LICENSE` that already exists is kept and never overwritten. The command reports which license it
+    is.
+  - With no `LICENSE`, the command writes the chosen license's text at the repository root, with the
+    current year and the chosen holder filled in. The text comes from GitHub's license API
+    (`gh api licenses/<key>`) or, for a license it does not list, from the text its steward publishes.
+    It is never written from recollection.
+  - Having no license is a valid choice. No file is written.
+- The `Validate` step checks that `LICENSE` exists at the root, or that the choice was to have none.
+- The output block gains the line:
+  > "`- License:      [<SPDX id> · <holder> / kept: <SPDX id> / none, by decision]`"
+
+Scenarios: 26, 27, 28.
+
+### 14. Persistence and audit
 
 - **Files changed:** the build writes only `plugins/claude-code/`. The scans write nothing.
 - **On the adopter's machine:** the plugin writes nothing. Claude Code records the install in its own
@@ -558,7 +582,7 @@ Then it exits 1 with "<file>:11: harness term "Claude" (NFR-FLEX-06)"
 ```gherkin
 Given baseline `519cc2a` and `plugins/claude-code/` built
 When each of the 23 pieces is compared with its baseline file
-Then every difference is a change listed in rule 9 or rule 10
+Then every difference is a change listed in rule 9, rule 10, or rule 13
 ```
 
 ### Scenario 21 — The delivered content is English
@@ -604,6 +628,34 @@ When the maintainer runs `python3 scan.py`
 Then it exits 1 with "mem-0001-example.md: vault note is tracked (NFR-SEC-02)"
 ```
 
+### Scenario 26 — `bootstrap` asks for the license (happy path)
+
+```gherkin
+Given a repository with no `LICENSE`
+When the adopter runs `/tightship:bootstrap`
+Then the license and its copyright holder are among the decisions asked before anything is written
+And after the adopter chooses `MIT` and a holder, `LICENSE` at the root holds the MIT text with the current year and that holder
+And the output block reads "- License:      MIT · <holder>"
+```
+
+### Scenario 27 — An existing license is kept
+
+```gherkin
+Given a repository whose `LICENSE` holds the Apache-2.0 text
+When the adopter runs `/tightship:bootstrap`
+Then `LICENSE` is unchanged
+And the output block reads "- License:      kept: Apache-2.0"
+```
+
+### Scenario 28 — No license, by decision
+
+```gherkin
+Given a repository with no `LICENSE`
+When the adopter runs `/tightship:bootstrap` and chooses to have no license
+Then no `LICENSE` is written
+And the output block reads "- License:      none, by decision"
+```
+
 ---
 
 ## Architecture impact
@@ -647,5 +699,5 @@ N/A — this epic stores nothing. The state of an Install's optional components 
 | --- | --- | --- | --- | --- |
 | 1 | Build the plugin from canonical content and install the verifier | `build.py` with `--check` and the frontmatter additions · `adapters/claude-code/plugin.json` and `frontmatter.json` · `.claude-plugin/marketplace.json` · `canonical/agents/` · `plugins/claude-code/` · `tests/` · install steps in `README.md` · the gates in `AGENTS.md` | Scenarios 1, 2, 10, 11, 12, 13, 14, 16, 17 | — |
 | 2 | Scan the content for harness terms, personal identity, and secrets | `scan.py` · `adapters/neutrality-terms.txt` · `tests/` · the two scan gates in `AGENTS.md` | Scenarios 18, 19, 22, 23, 24, 25 | 1 |
-| 3 | Carry the 14 skills and the 8 commands | Token rendering in `build.py` · `adapters/claude-code/terms/` · `canonical/skills/` · `canonical/commands/` · `plugins/claude-code/skills/` · `tests/` | Scenarios 3, 4, 5, 6, 7, 8, 9, 15, 20 | 2 |
+| 3 | Carry the 14 skills and the 8 commands | Token rendering in `build.py` · `adapters/claude-code/terms/` · `canonical/skills/` · `canonical/commands/` · `plugins/claude-code/skills/` · `tests/` | Scenarios 3, 4, 5, 6, 7, 8, 9, 15, 20, 26, 27, 28 | 2 |
 | 4 | Translate the Portuguese content to English | `canonical/commands/pr-review.md`, `spec.md`, `epic.md` · `canonical/skills/spec-writing/` · `plugins/claude-code/skills/` | Scenario 21 | 3 |
