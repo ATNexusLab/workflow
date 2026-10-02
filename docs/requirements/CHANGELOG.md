@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.0.1 — 2026-10-02
+
+Wording. Change request [#6](https://github.com/ATNexusLab/workflow/issues/6).
+
+**Changed**
+
+- BR-03: the rationale names the four pre-plugin pieces that carry Portuguese, where it counted one. The
+  rule is unchanged.
+
+**Settled**
+
+- OQ-01, OQ-04, and OQ-05, by the [spec of epic #1](../specs/installable-core.md) and
+  [ADR 0001](../decisions/0001-canonical-content-rendered-into-one-plugin-per-harness.md).
+
 ## 1.0.0 — 2026-10-02
 
 Kickoff. First version of the SRS, from the elicitation and analysis held with the maintainer on

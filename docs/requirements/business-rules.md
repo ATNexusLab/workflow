@@ -47,7 +47,7 @@ Everything a harness plugin installs and every document in this repository is wr
 
 | Attribute | Value |
 | --- | --- |
-| Rationale | The repository is public and open to any adopter. One pre-plugin command is written in Portuguese and is translated. |
+| Rationale | The repository is public and open to any adopter. Four pre-plugin pieces carry Portuguese and are translated: the `pr-review` command, the spec templates of `spec-writing`, and the `spec` and `epic` commands that quote them. |
 | Source | Maintainer, elicitation 2026-10-02 |
 | Priority | Must |
 | Status | approved |
