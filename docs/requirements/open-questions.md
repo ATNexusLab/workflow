@@ -7,10 +7,7 @@ each is to check the fact against the harness's documentation and installed vers
 
 | ID | Question | Affects | Settled by |
 | --- | --- | --- | --- |
-| <a id="oq-01"></a>OQ-01 | What is the plugin's name? It becomes the prefix of every command in harnesses that namespace plugin commands. | [FR-SKL-03](functional/skills.md#fr-skl-03) | M1 spec |
 | <a id="oq-02"></a>OQ-02 | Why did an adopter's agent take them for the maintainer? Ruled out so far: the 46 tracked files of the pre-plugin workflow contain no name, email, or home path of the maintainer, and the adopter uses a vault of their own. | [NFR-SEC-01](non-functional/security.md#nfr-sec-01) | Reproduction on the adopter's machine |
-| <a id="oq-04"></a>OQ-04 | Are the commands authored as skills in the canonical content? Three of the four harnesses treat a command as a skill. | [FR-SKL-02](functional/skills.md#fr-skl-02), [NFR-MNT-01](non-functional/maintainability.md#nfr-mnt-01) | M1 spec |
-| <a id="oq-05"></a>OQ-05 | How does the canonical content name a capability that is native to one harness, and where is each harness's equivalent stated? The pre-plugin contract names plan mode, the native code review and security review commands, and the exploration agent of Claude Code. | [NFR-FLEX-06](non-functional/flexibility.md#nfr-flex-06) | M1 spec |
 | <a id="oq-06"></a>OQ-06 | What is the role of the vault template's preferences file? Its text calls it the canonical cross-tool contract that every harness renders from, which contradicts [BR-02](business-rules.md#br-02). | [FR-MEM-06](functional/memory.md#fr-mem-06), [BR-02](business-rules.md#br-02) | Maintainer |
 | <a id="oq-07"></a>OQ-07 | What is the minimum supported version of each harness? | [NFR-FLEX-01](non-functional/flexibility.md#nfr-flex-01) to [NFR-FLEX-04](non-functional/flexibility.md#nfr-flex-04) | Each harness's spec |
 | <a id="oq-08"></a>OQ-08 | Cursor: is the target the editor, the command-line agent, or both? Whether a plugin's always-on rule loads in the command-line agent is not documented. | [NFR-FLEX-02](non-functional/flexibility.md#nfr-flex-02), [FR-CTR-01](functional/contract.md#fr-ctr-01) | M2 spec |
@@ -22,5 +19,8 @@ each is to check the fact against the harness's documentation and installed vers
 
 | ID | Question | Settled by |
 | --- | --- | --- |
+| <a id="oq-01"></a>OQ-01 | What is the plugin's name? | [Epic 1 spec](../specs/installable-core.md): `tightship`, installed as `tightship@atnexuslab` |
 | OQ-03 | In which state does each optional component start when the adopter makes no choice? | [FR-INS-02.3](functional/install.md#fr-ins-02): enabled, when the harness could not ask |
+| <a id="oq-04"></a>OQ-04 | Are the commands authored as skills in the canonical content? | [ADR 0001](../decisions/0001-canonical-content-rendered-into-one-plugin-per-harness.md): no, a command is authored as a command, and each harness decides how to package it |
+| <a id="oq-05"></a>OQ-05 | How does the canonical content name a capability that is native to one harness, and where is each harness's equivalent stated? | [ADR 0001](../decisions/0001-canonical-content-rendered-into-one-plugin-per-harness.md): as a `{{harness:<key>}}` token, with each harness's equivalent in `adapters/<harness>/terms/<key>.md` |
 | OQ-12 | Is the vault's location fixed or chosen by the adopter? | [FR-MEM-08](functional/memory.md#fr-mem-08): chosen by the adopter |

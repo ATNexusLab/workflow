@@ -38,14 +38,21 @@ Decided:
 
 - Every script is Python 3.10 or newer, so each one has a single copy for the three operating systems.
 
-Not decided:
+- The canonical content is rendered into one plugin per harness by a build, and the generated plugin is
+  committed ([ADR 0001](../decisions/0001-canonical-content-rendered-into-one-plugin-per-harness.md)).
 
-- How the canonical content becomes one plugin per harness. An ADR in the M1 spec settles it.
+## Sections
 
-## Not written yet
+| Section | Where |
+| --- | --- |
+| Building blocks | [building-blocks/](building-blocks/README.md) |
+| Runtime | [runtime/](runtime/README.md) |
+| Deployment | [deployment.md](deployment.md) |
+| Decisions | [../decisions/](../decisions/README.md) |
+| Glossary | The [glossary](../requirements/glossary.md) of the SRS |
 
-- **Building blocks, runtime, deployment, and crosscutting concepts** follow the ADR above; nothing
-  exists to describe until it is decided.
-- **Decisions:** `../decisions/` is created by the first spec.
-- **Risks:** the known ones are the [open questions](../requirements/open-questions.md) of the SRS.
-- **Glossary:** the [glossary](../requirements/glossary.md) of the SRS.
+Not written yet:
+
+- **Crosscutting concepts.** The first ones — how an optional component is turned on or off, and
+  security — arrive with the spec of epic #2.
+- **Risks.** The known ones are the [open questions](../requirements/open-questions.md) of the SRS.

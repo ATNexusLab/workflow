@@ -6,11 +6,9 @@
 | [architecture/](architecture/README.md) | The map of the system: context, strategy, and what is still undecided |
 | [data-model/](data-model/README.md) | The entities the product stores and how they relate |
 | [roadmap/](roadmap/README.md) | Milestones, their epics, requirement coverage, and each sprint's plan and result |
+| [specs/](specs/README.md) | One spec per epic, written before its code |
+| [decisions/](decisions/README.md) | The architecture decisions, one ADR each |
 | [diagrams/](diagrams/README.md) | Every diagram, as an editable `.drawio.svg` |
-
-Not present yet:
-
-- `specs/` and `decisions/` are created by the first spec.
 
 ## Local site
 
