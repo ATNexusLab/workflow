@@ -1,6 +1,6 @@
 # Epic 1 — Install the core: skills, commands and the verifier
 
-> **Status:** closed
+> **Status:** published
 > **Profile:** API
 > **Module:** `canonical/`, `adapters/claude-code/`, `plugins/claude-code/`, `.claude-plugin/`, `build.py`, `scan.py`
 > **Epic:** [#1](https://github.com/ATNexusLab/workflow/issues/1)
@@ -695,9 +695,9 @@ N/A — this epic stores nothing. The state of an Install's optional components 
 
 ## Task breakdown
 
-| # | Title | Scope | Acceptance criterion | Depends on |
-| --- | --- | --- | --- | --- |
-| 1 | Build the plugin from canonical content and install the verifier | `build.py` with `--check` and the frontmatter additions · `adapters/claude-code/plugin.json` and `frontmatter.json` · `.claude-plugin/marketplace.json` · `canonical/agents/` · `plugins/claude-code/` · `tests/` · install steps in `README.md` · the gates in `AGENTS.md` | Scenarios 1, 2, 10, 11, 12, 13, 14, 16, 17 | — |
-| 2 | Scan the content for harness terms, personal identity, and secrets | `scan.py` · `adapters/neutrality-terms.txt` · `tests/` · the two scan gates in `AGENTS.md` | Scenarios 18, 19, 22, 23, 24, 25 | 1 |
-| 3 | Carry the 14 skills and the 8 commands | Token rendering in `build.py` · `adapters/claude-code/terms/` · `canonical/skills/` · `canonical/commands/` · `plugins/claude-code/skills/` · `tests/` | Scenarios 3, 4, 5, 6, 7, 8, 9, 15, 20, 26, 27, 28 | 2 |
-| 4 | Translate the Portuguese content to English | `canonical/commands/pr-review.md`, `spec.md`, `epic.md` · `canonical/skills/spec-writing/` · `plugins/claude-code/skills/` | Scenario 21 | 3 |
+| # | Issue | Title | Scope | Acceptance criterion | Depends on |
+| --- | --- | --- | --- | --- | --- |
+| 1 | [#8](https://github.com/ATNexusLab/workflow/issues/8) | Build the plugin from canonical content and install the verifier | `build.py` with `--check` and the frontmatter additions · `adapters/claude-code/plugin.json` and `frontmatter.json` · `.claude-plugin/marketplace.json` · `canonical/agents/` · `plugins/claude-code/` · `tests/` · install steps in `README.md` · the gates in `AGENTS.md` | Scenarios 1, 2, 10, 11, 12, 13, 14, 16, 17 | — |
+| 2 | [#9](https://github.com/ATNexusLab/workflow/issues/9) | Scan the content for harness terms, personal identity, and secrets | `scan.py` · `adapters/neutrality-terms.txt` · `tests/` · the two scan gates in `AGENTS.md` | Scenarios 18, 19, 22, 23, 24, 25 | 1 |
+| 3 | [#10](https://github.com/ATNexusLab/workflow/issues/10) | Carry the 14 skills and the 8 commands | Token rendering in `build.py` · `adapters/claude-code/terms/` · `canonical/skills/` · `canonical/commands/` · `plugins/claude-code/skills/` · `tests/` | Scenarios 3, 4, 5, 6, 7, 8, 9, 15, 20, 26, 27, 28 | 2 |
+| 4 | [#11](https://github.com/ATNexusLab/workflow/issues/11) | Translate the Portuguese content to English | `canonical/commands/pr-review.md`, `spec.md`, `epic.md` · `canonical/skills/spec-writing/` · `plugins/claude-code/skills/` | Scenario 21 | 3 |
