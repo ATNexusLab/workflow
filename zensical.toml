@@ -1,0 +1,3 @@
+[project]
+site_name = "Workflow — internal docs"
+docs_dir = "docs"
