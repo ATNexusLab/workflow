@@ -1,0 +1,6 @@
+{
+  "name": "atnexuslab",
+  "description": "Plugins published by ATNexusLab.",
+  "owner": { "name": "ATNexusLab" },
+  "plugins": [{ "name": "tightship", "source": "./plugins/claude-code" }]
+}

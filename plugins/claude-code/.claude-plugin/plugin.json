@@ -1,0 +1,8 @@
+{
+  "name": "tightship",
+  "version": "0.1.0",
+  "description": "A development workflow for coding agents: skills, a command for each step of the development loop, and a read-only verifier.",
+  "author": { "name": "ATNexusLab" },
+  "license": "MIT",
+  "repository": "https://github.com/ATNexusLab/workflow"
+}

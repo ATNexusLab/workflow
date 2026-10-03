@@ -1,0 +1,3 @@
+{
+  "agents/adversarial-verifier": ["tools: Read, Grep, Glob, Bash"]
+}

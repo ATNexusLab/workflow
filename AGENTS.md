@@ -8,7 +8,8 @@ Additive to the global contract. What this repository must do is the SRS in
 - Python 3.10 or newer for every script.
 - Markdown for the workflow's content and for the docs.
 - Docs site: Zensical 0.0.67.
-- No package manager and no dependency manifest: the repository installs nothing.
+- No package manager and no dependency manifest: the repository installs nothing. `pyproject.toml` holds
+  only the configuration of the tools the gates run.
 
 ## Language & scripts
 
@@ -29,15 +30,16 @@ Additive to the global contract. What this repository must do is the SRS in
 
 | Gate | Command |
 | --- | --- |
-| Static analysis | Pending: Ruff 0.16.10, from the first Python file |
-| Type checking | Pending: mypy 2.4.0, from the first Python file |
-| Formatting | Pending: Ruff 0.16.10, from the first Python file |
-| Build | Pending: the build check of ADR 0001, from the first task of epic #1 |
-| Tests | Pending: pytest 9.1.1, from the first test |
+| Static analysis | `uvx ruff==0.16.10 check` |
+| Type checking | `uvx --with pytest==9.1.1 mypy==2.4.0 build.py tests` |
+| Formatting | `uvx ruff==0.16.10 format --check` |
+| Build | `python3 build.py --check` |
+| Tests | `uvx pytest==9.1.1` |
+| Plugin validation | `claude plugin validate --strict .` and `claude plugin validate --strict plugins/claude-code` |
 | Docs site | `uvx zensical==0.0.67 build` |
 | Run the docs site | `uvx zensical==0.0.67 serve --open` |
 
-Both docs commands run from the repository root.
+Every command runs from the repository root.
 
 ## Architecture
 
