@@ -31,7 +31,7 @@ Additive to the global contract. What this repository must do is the SRS in
 | Gate | Command |
 | --- | --- |
 | Static analysis | `uvx ruff==0.16.10 check` |
-| Type checking | `uvx --with pytest==9.1.1 mypy==2.4.0 build.py builder tests` |
+| Type checking | `uvx --with pytest==9.1.1 mypy==2.4.0 build.py builder tests` and `uvx --with pytest==9.1.1 pyright==1.1.414` |
 | Formatting | `uvx ruff==0.16.10 format --check` |
 | Build | `python3 build.py --check` |
 | Tests | `uvx pytest==9.1.1` |
