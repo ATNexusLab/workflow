@@ -2,6 +2,8 @@
 
 - Status: accepted
 - Date: 2026-10-02
+- Amended: 2026-10-03 — decision 7 places each part of the build in its own module of `builder/`,
+  where it first read "one function in `build.py`".
 
 ## Context
 
@@ -44,8 +46,9 @@ not. This decision settles [OQ-01](../requirements/open-questions.md#oq-01),
    | `adapters/<harness>/` | What one harness needs and the canonical content cannot say | Yes |
    | `plugins/<harness>/` | The plugin the harness installs, generated | Never |
 
-2. **A build renders the plugin, and the result is committed.** `build.py`, Python standard library only,
-   reads `canonical/` and `adapters/<harness>/` and writes `plugins/<harness>/`. `build.py --check` fails
+2. **A build renders the plugin, and the result is committed.** `build.py` and its package `builder/`,
+   Python standard library only, read `canonical/` and `adapters/<harness>/` and write
+   `plugins/<harness>/`. `build.py --check` fails
    when the committed plugin differs from a fresh build, and it is the repository's Build gate.
 
 3. **A reference is a token ([OQ-05](../requirements/open-questions.md#oq-05)).** The canonical content
@@ -74,15 +77,17 @@ not. This decision settles [OQ-01](../requirements/open-questions.md#oq-01),
    catalog `atnexuslab`, and points its one entry at `./plugins/claude-code`. An adopter installs
    `tightship@atnexuslab`.
 
-7. **Packaging is code, an adapter is data.** How a harness lays out its plugin is one function in
-   `build.py`. An adapter directory holds only files that function reads.
+7. **Packaging is code, an adapter is data.** How a harness lays out its plugin is one module of the
+   package `builder/`, named after the harness. What every harness shares — reading the pieces, adding
+   frontmatter, writing and comparing a plugin directory — is a module of its own beside it. `build.py`
+   only orchestrates them. An adapter directory holds only files its harness's module reads.
 
 ## Consequences
 
 Easier:
 
 - A piece is edited in one file, and the build carries it to every harness that has an adapter.
-- Adding a harness adds an adapter directory and a packaging function, and touches no canonical file
+- Adding a harness adds an adapter directory and a packaging module, and touches no canonical file
   ([NFR-FLEX-07](../requirements/non-functional/flexibility.md#nfr-flex-07)).
 - What an adopter receives is a directory in the repository: it is read in a pull request and installed
   from any branch before a release.

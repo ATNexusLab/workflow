@@ -4,6 +4,7 @@ from pathlib import Path
 import pytest
 
 import build
+from builder.errors import BuildError
 
 GENERATED_AGENT = "plugins/claude-code/agents/adversarial-verifier.md"
 
@@ -53,7 +54,7 @@ def test_unknown_piece_in_the_adapter_stops_the_build(repository: Path) -> None:
         json.dumps({"agents/adversarial-verifer": ["tools: Read"]}).encode()
     )
 
-    with pytest.raises(build.BuildError) as failure:
+    with pytest.raises(BuildError) as failure:
         build.build(repository)
 
     assert str(failure.value) == (
@@ -69,7 +70,7 @@ def test_stale_plugin_fails_the_check(repository: Path) -> None:
         b"---\nname: adversarial-verifier\n---\nChanged.\n"
     )
 
-    with pytest.raises(build.BuildError) as failure:
+    with pytest.raises(BuildError) as failure:
         build.check(repository)
 
     assert str(failure.value) == (
@@ -84,7 +85,7 @@ def test_catalog_entry_with_another_name_fails_the_check(repository: Path) -> No
         json.dumps({"plugins": [{"name": "tight-ship"}]}).encode()
     )
 
-    with pytest.raises(build.BuildError) as failure:
+    with pytest.raises(BuildError) as failure:
         build.check(repository)
 
     assert str(failure.value) == (
@@ -98,7 +99,7 @@ def test_piece_without_frontmatter_stops_the_build(repository: Path) -> None:
         b"Body.\n\n---\n\nMore.\n"
     )
 
-    with pytest.raises(build.BuildError) as failure:
+    with pytest.raises(BuildError) as failure:
         build.build(repository)
 
     assert str(failure.value) == (

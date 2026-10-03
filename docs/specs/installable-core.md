@@ -2,7 +2,7 @@
 
 > **Status:** published
 > **Profile:** API
-> **Module:** `canonical/`, `adapters/claude-code/`, `plugins/claude-code/`, `.claude-plugin/`, `build.py`, `scan.py`
+> **Module:** `canonical/`, `adapters/claude-code/`, `plugins/claude-code/`, `.claude-plugin/`, `build.py`, `builder/`, `scan.py`
 > **Epic:** [#1](https://github.com/ATNexusLab/workflow/issues/1)
 > **Requirements:** [FR-INS-01](../requirements/functional/install.md#fr-ins-01),
 > [FR-SKL-01](../requirements/functional/skills.md#fr-skl-01),
@@ -84,6 +84,7 @@ plugins/claude-code/
   skills/<name>/SKILL.md
   skills/spec-writing/templates.md
 build.py
+builder/
 scan.py
 tests/
 README.md
