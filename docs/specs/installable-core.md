@@ -236,6 +236,11 @@ Scenarios: 6, 7.
   > "`<file>:<line>: <token> resolves to nothing`"
 - A key in `frontmatter.json` that names no canonical piece fails the build with:
   > "`adapters/claude-code/frontmatter.json: "<key>" names no canonical piece`"
+- A key in `frontmatter.json` whose piece opens with no frontmatter fails the build with:
+  > "`adapters/claude-code/frontmatter.json: "<key>" has no frontmatter`"
+- A command with the name of a skill fails the build, since Claude Code packages both as the skill of
+  that name:
+  > "`canonical/commands/<name>.md: a skill is already named "<name>"`"
 
 Scenarios: 8, 9, 10.
 
@@ -397,6 +402,8 @@ Scenarios: 9, 15.
 | --- | --- | --- | --- |
 | Unresolved reference | `1` | A token in `canonical/` names no command, no skill, and no term | "`<file>:<line>: <token> resolves to nothing`" |
 | Unknown piece | `1` | A key of `frontmatter.json` matches no canonical piece | "`adapters/claude-code/frontmatter.json: "<key>" names no canonical piece`" |
+| No frontmatter | `1` | A key of `frontmatter.json` names a piece that opens with no frontmatter | "`adapters/claude-code/frontmatter.json: "<key>" has no frontmatter`" |
+| Name taken | `1` | A command has the name of a skill | "`canonical/commands/<name>.md: a skill is already named "<name>"`" |
 | Out of date | `1` | `--check` finds a path that differs, is extra, or is missing | "`plugins/claude-code/<path>: differs from a fresh build`" · "`…: is not produced by the build`" · "`…: is missing`" |
 | Name mismatch | `1` | `--check` finds the catalog entry and the manifest with different names | "`.claude-plugin/marketplace.json: plugin entry "<entry>" does not match "<name>" in adapters/claude-code/plugin.json`" |
 | Harness term | `1` | A file under `canonical/` matches a neutrality term | "`<file>:<line>: harness term "<match>" (NFR-FLEX-06)`" |
