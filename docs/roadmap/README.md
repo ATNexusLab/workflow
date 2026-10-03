@@ -14,7 +14,7 @@ Epics are built in the order listed.
 | --- | --- | --- |
 | Installable core: skills, commands and the verifier | [#1](https://github.com/ATNexusLab/workflow/issues/1) | FR-INS-01, FR-SKL-01 to FR-SKL-03, FR-VER-01, FR-VER-02, NFR-MNT-01, NFR-FLEX-06, NFR-SEC-01, NFR-SEC-02, BR-02, BR-03 |
 | Contract in every session, on or off | [#2](https://github.com/ATNexusLab/workflow/issues/2) | FR-CTR-01 to FR-CTR-04, FR-INS-02, FR-INS-03, NFR-COMP-01, BR-04, BR-05 |
-| Memory layer | [#3](https://github.com/ATNexusLab/workflow/issues/3) | FR-MEM-01 to FR-MEM-08, NFR-REL-01, NFR-REL-02, NFR-PERF-01, NFR-PERF-02, NFR-SEC-03, NFR-SEC-04 |
+| Memory layer | [#3](https://github.com/ATNexusLab/workflow/issues/3) | FR-MEM-01 to FR-MEM-12, NFR-REL-01, NFR-REL-02, NFR-PERF-01, NFR-PERF-02, NFR-SEC-03, NFR-SEC-04 |
 | Opt-in status line | [#4](https://github.com/ATNexusLab/workflow/issues/4) | FR-STL-01 to FR-STL-03 |
 | Lifecycle and the M1 release | [#5](https://github.com/ATNexusLab/workflow/issues/5) | FR-INS-04 to FR-INS-07, FR-CTR-05, NFR-FLEX-01, NFR-FLEX-05, BR-01 |
 
@@ -64,6 +64,10 @@ Every approved requirement of a planned milestone maps to exactly one epic.
 | [FR-MEM-06](../requirements/functional/memory.md#fr-mem-06) | #3 | M1 |
 | [FR-MEM-07](../requirements/functional/memory.md#fr-mem-07) | #3 | M1 |
 | [FR-MEM-08](../requirements/functional/memory.md#fr-mem-08) | #3 | M1 |
+| [FR-MEM-09](../requirements/functional/memory.md#fr-mem-09) | #3 | M1 |
+| [FR-MEM-10](../requirements/functional/memory.md#fr-mem-10) | #3 | M1 |
+| [FR-MEM-11](../requirements/functional/memory.md#fr-mem-11) | #3 | M1 |
+| [FR-MEM-12](../requirements/functional/memory.md#fr-mem-12) | #3 | M1 |
 | [FR-INS-01](../requirements/functional/install.md#fr-ins-01) | #1 | M1 |
 | [FR-INS-02](../requirements/functional/install.md#fr-ins-02) | #2 | M1 |
 | [FR-INS-03](../requirements/functional/install.md#fr-ins-03) | #2 | M1 |

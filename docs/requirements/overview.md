@@ -24,7 +24,9 @@
 - **Prerequisites carried over from the pre-plugin workflow:** Python 3.10 or newer and git for the
   memory layer; for the status line, `jq` on macOS and Linux and PowerShell 7 or newer on Windows.
 - **The vault:** a git repository on the adopter's machine, at a location the adopter chooses
-  ([FR-MEM-08](functional/memory.md#fr-mem-08)). The pre-plugin workflow fixes it at `~/ai-memory`.
+  ([FR-MEM-08](functional/memory.md#fr-mem-08)). The pre-plugin workflow fixes it at `~/ai-memory`. A git
+  remote for it is optional; without one, the functions that reach a remote say so
+  ([FR-MEM-11](functional/memory.md#fr-mem-11)).
 
 ## Constraints
 

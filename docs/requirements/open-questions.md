@@ -14,6 +14,7 @@ each is to check the fact against the harness's documentation and installed vers
 | <a id="oq-09"></a>OQ-09 | Antigravity CLI: it has no session-start and no prompt-submit event, a 24,000-byte cap per rule file, no version field in its plugin manifest, and no documented catalog other than its curated one. How are the memory context, the checkpoint, the whole contract, release identification, and installation delivered? | [NFR-FLEX-03](non-functional/flexibility.md#nfr-flex-03), [FR-CTR-01](functional/contract.md#fr-ctr-01), [FR-MEM-01](functional/memory.md#fr-mem-01), [FR-MEM-02](functional/memory.md#fr-mem-02), [FR-INS-01](functional/install.md#fr-ins-01), [FR-INS-04](functional/install.md#fr-ins-04) | M3 spec |
 | <a id="oq-10"></a>OQ-10 | Codex: a subagent is a file outside the plugin, plugin hooks run only after the adopter trusts them, and a plugin carries no always-on text. How are the verifier, the hooks, and the contract delivered? | [NFR-FLEX-04](non-functional/flexibility.md#nfr-flex-04), [FR-VER-01](functional/verifier.md#fr-ver-01), [FR-CTR-01](functional/contract.md#fr-ctr-01) | M4 spec |
 | <a id="oq-11"></a>OQ-11 | Can Cursor, Antigravity CLI, and Codex show a status line a plugin provides? | [FR-STL-01](functional/status-line.md#fr-stl-01) | Each harness's spec |
+| <a id="oq-13"></a>OQ-13 | How does the sync reconcile a note changed both locally and on the remote, and two notes that took the same identifier on different machines? | [FR-MEM-11](functional/memory.md#fr-mem-11) | Epic #3 spec |
 
 ## Settled
 

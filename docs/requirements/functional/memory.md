@@ -1,6 +1,6 @@
 # Memory — `MEM`
 
-The vault functions and the vault template. Every requirement here applies while memory is enabled,
+The vault functions, the vault template, and the sync with the remotes. Every requirement here applies while memory is enabled,
 except [FR-MEM-07](#fr-mem-07).
 
 <a id="fr-mem-01"></a>
@@ -177,6 +177,9 @@ own, and no vault is read or written.
   is compacted, then no memory context and no checkpoint reminder is added.
 - **FR-MEM-07.2** — Given memory disabled and a vault on the machine, when a session runs, then no file
   in the vault is read or written by the plugin.
+- **FR-MEM-07.3** — Given memory disabled, when the adopter invokes the handoff release, the handoff fetch,
+  or the sync, then no file in the vault is read or written, no remote is contacted, and the adopter is
+  told memory is disabled.
 
 <a id="fr-mem-08"></a>
 ## FR-MEM-08 — Vault location is the adopter's choice
@@ -200,3 +203,110 @@ enabled memory without choosing one.
   writes the vault at that location.
 - **FR-MEM-08.2** — Given memory enabled and no location chosen, when any memory function runs, then it
   reads and writes the vault at `~/ai-memory`.
+
+<a id="fr-mem-09"></a>
+## FR-MEM-09 — Release a handoff
+
+> As an adopter stopping work on a project, I want its state released as a handoff, so that the next
+> session continues from it on any of my machines.
+
+The plugin shall let the adopter release a handoff: a handoff note of the project's state, written in the
+project's scope and sent to the vault's remote.
+
+| Attribute | Value |
+| --- | --- |
+| Rationale | A handoff that stays on one machine does not reach the session that continues the work on another. Before this requirement a handoff was an ordinary note write, with nothing that sent it. |
+| Source | Maintainer, change request [#12](https://github.com/ATNexusLab/workflow/issues/12), 2026-10-03 |
+| Priority | Must |
+| Status | approved |
+| Milestone | M1 |
+| Since | v1.1.0 |
+
+**Acceptance criteria**
+- **FR-MEM-09.1** — Given a vault with a remote, when the adopter releases a handoff, then a handoff note
+  with the project's state exists in the project's scope and the vault's remote holds it.
+- **FR-MEM-09.2** — Given a vault with no remote, or a remote that cannot be reached, when the adopter
+  releases a handoff, then the note exists in the local vault and the adopter is told the remote does not
+  hold it and why.
+
+<a id="fr-mem-10"></a>
+## FR-MEM-10 — Fetch a handoff
+
+> As an adopter resuming a project, I want its latest handoff fetched, so that I continue from where the
+> last session stopped, on whichever machine it ran.
+
+The plugin shall let the adopter fetch the project's latest handoff, after bringing the vault up to date
+from its remote.
+
+| Attribute | Value |
+| --- | --- |
+| Rationale | The session-start context shows the latest handoff on disk ([FR-MEM-01.3](#fr-mem-01)). A handoff released on another machine is not on disk until the vault is brought up to date. |
+| Source | Maintainer, change request [#12](https://github.com/ATNexusLab/workflow/issues/12), 2026-10-03 |
+| Priority | Must |
+| Status | approved |
+| Milestone | M1 |
+| Since | v1.1.0 |
+
+**Acceptance criteria**
+- **FR-MEM-10.1** — Given a handoff note in the project's scope on the vault's remote, newer than every
+  local one, when the adopter fetches the handoff, then its text is in the agent's context.
+- **FR-MEM-10.2** — Given no handoff note in the project's scope, locally or on the remote, when the
+  adopter fetches the handoff, then the adopter is told there is none.
+- **FR-MEM-10.3** — Given a vault with no remote, or a remote that cannot be reached, when the adopter
+  fetches the handoff, then the text of the latest local one is in the agent's context and the adopter is
+  told the remote was not read and why.
+
+<a id="fr-mem-11"></a>
+## FR-MEM-11 — Sync the vault with its remote
+
+> As an adopter, I want the vault synchronized with its remote by one command, so that I never open a
+> session only to push it.
+
+The plugin shall synchronize the vault with its remote on the adopter's request.
+
+| Attribute | Value |
+| --- | --- |
+| Rationale | In the pre-plugin workflow the maintainer opened a session only to send the vault and the harness's user directory to their remotes. The plugin replaces the user directory; the vault still has to travel. |
+| Source | Maintainer, change request [#12](https://github.com/ATNexusLab/workflow/issues/12), 2026-10-03 |
+| Priority | Must |
+| Status | approved |
+| Milestone | M1 |
+| Since | v1.1.0 |
+
+**Acceptance criteria**
+- **FR-MEM-11.1** — Given notes that exist only in the local vault and notes that exist only on its
+  remote, when the adopter syncs, then the local vault and the remote hold the same notes.
+- **FR-MEM-11.2** — Given a vault with no remote, or a remote that cannot be reached, when the adopter
+  syncs, then no note is changed and the adopter is told why.
+- **FR-MEM-11.3** — Given a note changed both locally and on the remote, when the adopter syncs, then
+  neither version is discarded and the adopter is told which notes differ. How they are reconciled is
+  [OQ-13](../open-questions.md#oq-13).
+
+<a id="fr-mem-12"></a>
+## FR-MEM-12 — Sync pushes the project's branch
+
+> As an adopter finishing work, I want the same sync to send my project's commits, so that one command
+> leaves nothing only on this machine.
+
+The plugin shall, in the same sync, send the commits of the project repository's current branch to that
+repository's remote.
+
+| Attribute | Value |
+| --- | --- |
+| Rationale | The ceremony the sync replaces sent more than the vault. The commits stay the adopter's decision; the sync only sends the ones that exist. |
+| Source | Maintainer, change request [#12](https://github.com/ATNexusLab/workflow/issues/12), 2026-10-03 |
+| Priority | Must |
+| Status | approved |
+| Milestone | M1 |
+| Since | v1.1.0 |
+
+**Acceptance criteria**
+- **FR-MEM-12.1** — Given commits on the project's current branch that its remote lacks, when the adopter
+  syncs, then the remote branch holds them.
+- **FR-MEM-12.2** — Given uncommitted changes in the project repository, when the adopter syncs, then
+  none of them is committed or sent and the adopter is told which files they are.
+- **FR-MEM-12.3** — Given a remote branch that holds commits the local branch lacks, when the adopter
+  syncs, then no commit on the remote is overwritten, nothing of the project is sent, and the adopter is
+  told why.
+- **FR-MEM-12.4** — Given a session outside a git repository, or in one with no remote, when the adopter
+  syncs, then the vault is synchronized and the adopter is told nothing of the project was sent.

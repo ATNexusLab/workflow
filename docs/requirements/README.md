@@ -1,6 +1,6 @@
 # Workflow — Software Requirements Specification
 
-**Version:** 1.0.1 · **Date:** 2026-10-02 · [Changelog](CHANGELOG.md)
+**Version:** 1.1.0 · **Date:** 2026-10-03 · [Changelog](CHANGELOG.md)
 
 ## Purpose
 
@@ -24,7 +24,9 @@ In scope:
 - One plugin per harness — Claude Code, Cursor, Antigravity CLI, Codex — released in that order
   ([BR-01](business-rules.md#br-01)).
 - Delivery of the contract, the skills, the commands, and the verifier.
-- The memory layer: its automatic functions, its note functions, and the vault template.
+- The memory layer: its automatic functions, its note functions, the vault template, and the functions
+  that reach a remote — handoff release, handoff fetch, and the sync of the vault and of the project's
+  commits.
 - The status line, as an opt-in.
 - Installation, the choice of optional components, update, uninstall, and migration from the pre-plugin
   install.
@@ -73,6 +75,10 @@ Milestones M1 to M4 are defined by [BR-01](business-rules.md#br-01).
 | [FR-MEM-06](functional/memory.md#fr-mem-06) | Create a vault from the template | Must | approved | M1 |
 | [FR-MEM-07](functional/memory.md#fr-mem-07) | Memory can be turned off | Must | approved | M1 |
 | [FR-MEM-08](functional/memory.md#fr-mem-08) | Vault location is the adopter's choice | Must | approved | M1 |
+| [FR-MEM-09](functional/memory.md#fr-mem-09) | Release a handoff | Must | approved | M1 |
+| [FR-MEM-10](functional/memory.md#fr-mem-10) | Fetch a handoff | Must | approved | M1 |
+| [FR-MEM-11](functional/memory.md#fr-mem-11) | Sync the vault with its remote | Must | approved | M1 |
+| [FR-MEM-12](functional/memory.md#fr-mem-12) | Sync pushes the project's branch | Must | approved | M1 |
 | [FR-INS-01](functional/install.md#fr-ins-01) | Install through the harness's plugin mechanism | Must | approved | M1 |
 | [FR-INS-02](functional/install.md#fr-ins-02) | Choose the optional components | Must | approved | M1 |
 | [FR-INS-03](functional/install.md#fr-ins-03) | Change a choice after installation | Should | approved | M1 |
@@ -95,7 +101,7 @@ Milestones M1 to M4 are defined by [BR-01](business-rules.md#br-01).
 | [NFR-COMP-03](non-functional/compatibility.md#nfr-comp-03) | No double loading across harnesses | Must | approved | M2 |
 | [NFR-SEC-01](non-functional/security.md#nfr-sec-01) | No personal identity in shipped content | Must | approved | M1 |
 | [NFR-SEC-02](non-functional/security.md#nfr-sec-02) | No secret and no vault content in the repository | Must | approved | M1 |
-| [NFR-SEC-03](non-functional/security.md#nfr-sec-03) | No network access | Must | approved | M1 |
+| [NFR-SEC-03](non-functional/security.md#nfr-sec-03) | No network access beyond the adopter's git remotes | Must | approved | M1 |
 | [NFR-SEC-04](non-functional/security.md#nfr-sec-04) | Confined writes | Must | approved | M1 |
 | [NFR-MNT-01](non-functional/maintainability.md#nfr-mnt-01) | One authored copy per piece | Must | approved | M1 |
 | [NFR-REL-01](non-functional/reliability.md#nfr-rel-01) | A plugin failure never blocks the session | Must | approved | M1 |
