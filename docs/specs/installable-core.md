@@ -2,7 +2,7 @@
 
 > **Status:** published
 > **Profile:** API
-> **Module:** `canonical/`, `adapters/claude-code/`, `plugins/claude-code/`, `.claude-plugin/`, `build.py`, `builder/`, `scan.py`
+> **Module:** `canonical/`, `adapters/claude-code/`, `plugins/claude-code/`, `.claude-plugin/`, `build.py`, `builder/`, `scan.py`, `scanner/`
 > **Epic:** [#1](https://github.com/ATNexusLab/workflow/issues/1)
 > **Requirements:** [FR-INS-01](../requirements/functional/install.md#fr-ins-01),
 > [FR-SKL-01](../requirements/functional/skills.md#fr-skl-01),
@@ -86,6 +86,7 @@ plugins/claude-code/
 build.py
 builder/
 scan.py
+scanner/
 tests/
 README.md
 ```
@@ -342,6 +343,8 @@ Scenario: 21.
 - Each match is reported as:
   > "`<file>:<line>: personal identity "<match>" (NFR-SEC-01)`"
 - The names are read from `git log` when the scan runs. No file of the repository lists them.
+- The identity `GitHub <noreply@github.com>` is left out: it is the committer GitHub writes on a
+  commit made on its site, and the plugin names GitHub.
 - At session start the plugin places in context only the names and descriptions of its skills and of the
   verifier. They are files the scan covers, and the plugin ships no hook.
 

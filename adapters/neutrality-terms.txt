@@ -1,0 +1,12 @@
+(?i)claude
+(?i)anthropic
+(?i)cursor
+(?i)antigravity
+(?i)codex
+(?i)openai
+(?i)plan mode
+(?i)explore\W{0,4}agent
+/code-review
+/security-review
+`general-purpose`
+`(Bash|Grep|Glob|Read|Edit|Write|WebFetch|WebSearch)`

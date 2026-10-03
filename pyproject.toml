@@ -12,7 +12,7 @@ python_version = "3.10"
 [tool.pyright]
 typeCheckingMode = "strict"
 pythonVersion = "3.10"
-include = ["build.py", "builder", "tests"]
+include = ["build.py", "builder", "scan.py", "scanner", "tests"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

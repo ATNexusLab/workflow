@@ -3,7 +3,7 @@
 - Status: accepted
 - Date: 2026-10-02
 - Amended: 2026-10-03 — decision 7 places each part of the build in its own module of `builder/`,
-  where it first read "one function in `build.py`".
+  where it first read "one function in `build.py`". Decision 8 gives the content scan the same shape.
 
 ## Context
 
@@ -81,6 +81,10 @@ not. This decision settles [OQ-01](../requirements/open-questions.md#oq-01),
    package `builder/`, named after the harness. What every harness shares — reading the pieces, adding
    frontmatter, writing and comparing a plugin directory — is a module of its own beside it. `build.py`
    only orchestrates them. An adapter directory holds only files its harness's module reads.
+
+8. **The content scan has the shape of the build.** Each thing the scan looks for is one module of the
+   package `scanner/`, and reading files line by line, which two of them share, is a module of its own
+   beside them. `scan.py` only orchestrates them. The scan reads and never writes.
 
 ## Consequences
 

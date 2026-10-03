@@ -31,10 +31,12 @@ Additive to the global contract. What this repository must do is the SRS in
 | Gate | Command |
 | --- | --- |
 | Static analysis | `uvx ruff==0.16.10 check` |
-| Type checking | `uvx --with pytest==9.1.1 mypy==2.4.0 build.py builder tests` and `uvx --with pytest==9.1.1 pyright==1.1.414` |
+| Type checking | `uvx --with pytest==9.1.1 mypy==2.4.0 build.py builder scan.py scanner tests` and `uvx --with pytest==9.1.1 pyright==1.1.414` |
 | Formatting | `uvx ruff==0.16.10 format --check` |
 | Build | `python3 build.py --check` |
 | Tests | `uvx pytest==9.1.1` |
+| Content scan | `python3 scan.py` |
+| Secret scan | `git ls-files -z \| xargs -0 uvx --from detect-secrets==1.5.0 detect-secrets-hook` |
 | Plugin validation | `claude plugin validate --strict .` and `claude plugin validate --strict plugins/claude-code` |
 | Docs site | `uvx zensical==0.0.67 build` |
 | Run the docs site | `uvx zensical==0.0.67 serve --open` |
@@ -54,7 +56,8 @@ map is [docs/architecture/](docs/architecture/README.md). Epic #1 creates the pa
 | `.claude-plugin/marketplace.json` | The catalog Claude Code reads | Its entry carries the name written in `adapters/claude-code/plugin.json` |
 | `build.py` | The build's entry point | Orchestrates only: it calls `builder/` and reports. No packaging logic |
 | `builder/` | The parts of the build | Reads `canonical/` and `adapters/`, writes only `plugins/`. One module per harness, named after it; what harnesses share is a module of its own |
-| `scan.py` | The content scan | Reads only |
+| `scan.py` | The content scan's entry point | Orchestrates only: it calls `scanner/` and reports. No scanning logic |
+| `scanner/` | The parts of the content scan | Reads only. One module per thing the scan looks for; what they share is a module of its own |
 | `tests/` | The tests of the build and the scan | — |
 
 Where a new file goes:
