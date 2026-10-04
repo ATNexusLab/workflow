@@ -11,7 +11,7 @@ in it is exactly what an adopter receives.
 | --- | --- |
 | `.claude-plugin/plugin.json` | The manifest, copied from the [adapter](claude-code-adapter.md) |
 | `agents/adversarial-verifier.md` | The verifier, reached as `tightship:adversarial-verifier` |
-| `skills/<name>/` | The skills and the commands, from [#10](https://github.com/ATNexusLab/workflow/issues/10) |
+| `skills/<name>/` | The 14 skills and the 8 commands, each reached as `tightship:<name>` |
 
 ## What it never does
 

@@ -15,7 +15,17 @@ def repository(tmp_path: Path) -> Path:
         "canonical/agents/adversarial-verifier.md": (
             "---\nname: adversarial-verifier\ndescription: Disproves one claim.\n---\n\nBody.\n"
         ),
+        "canonical/skills/grilling/SKILL.md": (
+            "---\nname: grilling\ndescription: States assumptions.\n---\n\n"
+            "Published by `{{command:spec}}`.\n"
+        ),
+        "canonical/skills/grilling/notes.md": "Kept beside `{{skill:grilling}}`.\n",
+        "canonical/commands/spec.md": (
+            "---\ndescription: Writes a spec.\n---\n\n"
+            "Run a `{{skill:grilling}}` session, then dispatch {{harness:general-agent}}.\n"
+        ),
         "adapters/claude-code/plugin.json": json.dumps({"name": "tightship"}),
+        "adapters/claude-code/terms/general-agent.md": "`general-purpose`\n",
         "adapters/claude-code/frontmatter.json": json.dumps(
             {"agents/adversarial-verifier": ["tools: Read, Grep, Glob, Bash"]}
         ),
@@ -35,7 +45,17 @@ def test_build_packages_the_agent_with_its_adapter_frontmatter(
     build.check(repository)
 
     assert capsys.readouterr().out == (
-        "Built plugins/claude-code: 0 skills, 1 agent.\nplugins/claude-code is up to date.\n"
+        "Built plugins/claude-code: 2 skills, 1 agent.\nplugins/claude-code is up to date.\n"
+    )
+    skills = repository / "plugins/claude-code/skills"
+    assert (skills / "grilling/SKILL.md").read_bytes() == (
+        b"---\nname: grilling\ndescription: States assumptions.\n---\n\n"
+        b"Published by `/tightship:spec`.\n"
+    )
+    assert (skills / "grilling/notes.md").read_bytes() == b"Kept beside `tightship:grilling`.\n"
+    assert (skills / "spec/SKILL.md").read_bytes() == (
+        b"---\ndescription: Writes a spec.\n---\n\n"
+        b"Run a `tightship:grilling` session, then dispatch `general-purpose`.\n"
     )
     assert (repository / GENERATED_AGENT).read_bytes() == (
         b"---\nname: adversarial-verifier\ndescription: Disproves one claim.\n"
@@ -62,6 +82,22 @@ def test_unknown_piece_in_the_adapter_stops_the_build(repository: Path) -> None:
         "names no canonical piece"
     )
     assert (repository / GENERATED_AGENT).read_bytes() == built
+
+
+def test_unresolved_reference_stops_the_build(repository: Path) -> None:
+    build.build(repository)
+    built = (repository / "plugins/claude-code/skills/spec/SKILL.md").read_bytes()
+    (repository / "canonical/commands/spec.md").write_bytes(
+        b"---\ndescription: Writes a spec.\n---\n\n\n\n\nPublished by `{{command:epik}}`.\n"
+    )
+
+    with pytest.raises(BuildError) as failure:
+        build.build(repository)
+
+    assert str(failure.value) == (
+        "canonical/commands/spec.md:8: {{command:epik}} resolves to nothing"
+    )
+    assert (repository / "plugins/claude-code/skills/spec/SKILL.md").read_bytes() == built
 
 
 def test_stale_plugin_fails_the_check(repository: Path) -> None:

@@ -1,0 +1,96 @@
+---
+name: spec-writing
+description: Use when writing a design document before implementation — a feature spec, an ADR, or acceptance criteria. Carries the templates and the gate that no spec ships with unresolved ambiguity.
+---
+
+# Spec Writing
+
+## When to use
+
+| Artifact | For |
+|---|---|
+| **Feature spec** | A feature that will be built and tracked. Maps the whole behavior, then breaks into tasks. → `templates.md` |
+| **ADR** | A decision that affects architecture or crosses modules. → template below |
+| **Implementation plan** | How to build something already specced. Working doc, not a repo doc unless asked. |
+
+A feature spec is written by `{{command:spec}}` and published by `{{command:epic}}`. The two are separate on purpose: the spec
+closes before a single issue exists.
+
+## Core rule — a spec is closed or it is not a spec
+
+A **closed** spec has zero unresolved blocking ambiguity. Not "documented as a risk" — resolved. A `Risks`
+section carried into implementation means the design is unfinished.
+
+The gate, checked before `Status: fechada`:
+
+- No `TBD`, `???`, `a definir`, `talvez`, or a question mark in a declarative sentence.
+- Every user-facing message is the **literal string**, in quotes — not "uma mensagem de erro".
+- Every limit is a **number** — not "um limite razoável".
+- Every field states type, obligatoriness, and where its data comes from.
+- Every business rule has at least one Gherkin scenario.
+- `Fora de Escopo` is filled in. An empty out-of-scope section means the boundary was never drawn.
+
+When something genuinely cannot be resolved now, it goes to `Fora de Escopo` with the reason — it leaves
+the spec entirely. It never stays as a soft spot inside it.
+
+*Incomplete beats ambiguous.* A section marked `N/A` with a reason is complete; a section written in
+hedges is not.
+
+## Feature spec
+
+Two profiles — **UI** and **API** — in `templates.md`. Read that file before writing one. The profile is a
+header field chosen at the start, and a feature with both a screen and an endpoint gets two linked specs,
+never one hybrid.
+
+Location: follow the repo's existing convention (`docs/specs/<slug>.md`,
+whatever is already there). Only fall back to `docs/specs/<slug>.md` when the repo has none.
+
+Every feature spec ends with `## Quebra em Tasks` — the table `{{command:epic}}` publishes verbatim. Rules for
+slicing it are in `templates.md`.
+
+## ADR template → `docs/decisions/NNNN-<slug>.md`
+
+```markdown
+# NNNN. <Title>
+- Status: proposed | accepted | superseded by NNNN
+- Date: <YYYY-MM-DD>
+
+## Context
+The forces at play: problem, constraints, what must hold true.
+
+## Decision
+The choice, stated plainly.
+
+## Consequences
+What becomes easier, what becomes harder, what we accept.
+
+## Alternatives considered
+Option · why rejected.
+```
+
+An ADR must conform to — or explicitly amend — the repo's `Architecture` section.
+
+## Acceptance criteria format
+
+Gherkin in the repo's doc language: `Dado <estado>, Quando <ação>, Então <resultado observável>.` Each must
+be testable — if it has no metric or observable result, sharpen it. Coverage floor: one happy path, one
+alternative per dynamic behavior, one exception per rule that can fail.
+
+## Validation checklist
+
+- [ ] The closed-spec gate above passes, line by line.
+- [ ] Every business rule maps to at least one scenario.
+- [ ] Every scenario maps to at least one task in `Quebra em Tasks`.
+- [ ] `Depende de` carries task numbers, not prose.
+- [ ] The doc respects (or knowingly amends) the decided architecture.
+- [ ] `Requisitos` lists the requirement IDs of its epic, and every acceptance criterion of each one is
+      covered by a scenario.
+- [ ] `Impacto na arquitetura` and `Impacto no modelo de dados` name elements as `docs/architecture/`
+      and `docs/data-model/` name them, and those docs carry the change.
+- [ ] An ADR states context, decision, consequences, and alternatives.
+
+## Never do
+
+- Write code from a spec command — design only.
+- Invent a requirement, a permission name, a message, or a limit the user has not confirmed.
+- Open an issue from a spec that is still `rascunho`.

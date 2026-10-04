@@ -1,6 +1,6 @@
 (?i)claude
 (?i)anthropic
-(?i)cursor
+(?i)cursor(?!-based)
 (?i)antigravity
 (?i)codex
 (?i)openai

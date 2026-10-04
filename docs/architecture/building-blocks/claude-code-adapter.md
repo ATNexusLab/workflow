@@ -10,7 +10,7 @@ States what Claude Code needs and the [canonical content](canonical-content.md) 
 | --- | --- | --- |
 | `plugin.json` | The plugin manifest. The plugin's name is written here | Copies it to `.claude-plugin/plugin.json` of the plugin |
 | `frontmatter.json` | Lines to add to a piece's frontmatter, keyed by the piece | Inserts them at the end of that piece's frontmatter |
-| `terms/<key>.md` | The text of one `{{harness:<key>}}` | Arrives with [#10](https://github.com/ATNexusLab/workflow/issues/10) |
+| `terms/<key>.md` | The text of one `{{harness:<key>}}` | Writes it, without its final line break, where a piece writes the token |
 
 A key of `frontmatter.json` is the piece's path under `canonical/`: `agents/<name>`, `skills/<name>`, or
 `commands/<name>`.

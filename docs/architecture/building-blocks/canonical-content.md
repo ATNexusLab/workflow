@@ -12,9 +12,6 @@ Holds the one authored copy of every piece of the workflow. A piece is edited he
 | `skills/<name>/SKILL.md` | A skill, with its supporting files beside it |
 | `commands/<name>.md` | A command |
 
-Built so far: `agents/adversarial-verifier.md`. The skills and the commands arrive with
-[#10](https://github.com/ATNexusLab/workflow/issues/10).
-
 ## What it never does
 
 - It names no harness, no harness path, and no harness tool or command. Nothing in it matches a line of
@@ -28,3 +25,5 @@ Built so far: `agents/adversarial-verifier.md`. The skills and the commands arri
 - A piece's frontmatter is `name` and `description`, plus `argument-hint` for a command. The table of
   canonical frontmatter is in the [spec of epic #1](../../specs/installable-core.md).
 - A new agent, skill, or command needs no change to the build: it is found by its path.
+- A reference to a command or a skill is written `{{command:<name>}}` or `{{skill:<name>}}`, and text
+  only one harness can say is `{{harness:<key>}}`. A `{{` that opens no such token stops the build.

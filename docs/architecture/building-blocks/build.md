@@ -13,8 +13,6 @@
 
 - It writes nothing outside `plugins/`.
 - It writes nothing when packaging fails: every file is produced in memory first.
-- It does not render tokens yet. That arrives with
-  [#10](https://github.com/ATNexusLab/workflow/issues/10).
 
 ## Inner blocks
 
@@ -22,8 +20,9 @@
 | --- | --- |
 | `build.py` | Orchestrates: reads the arguments, asks a harness module for the plugin's files, then has them written or compared, and reports. It holds no packaging logic |
 | `builder/pieces.py` | Reads `canonical/`: every agent, skill, and command, with a skill's supporting files |
+| `builder/tokens.py` | Replaces each reference token of one file with its value, and lists the tokens that resolve to nothing, each with its file and line |
 | `builder/frontmatter.py` | Adds lines to the end of a piece's frontmatter |
-| `builder/claude_code.py` | Returns every file of the Claude Code plugin, path and content, and compares the catalog entry with the manifest. The one place that knows how Claude Code lays out a plugin |
+| `builder/claude_code.py` | Returns every file of the Claude Code plugin, path and content, with each token rendered as the name Claude Code uses or as the adapter's term, and compares the catalog entry with the manifest. The one place that knows how Claude Code lays out a plugin |
 | `builder/plugin_directory.py` | Replaces `plugins/<harness>/`, and lists each path that differs from a fresh build, is missing, or is not produced |
 | `builder/errors.py` | `BuildError` |
 
