@@ -153,7 +153,7 @@ baseline; each later milestone adds its harness's native names.
 ```
 (?i)claude
 (?i)anthropic
-(?i)cursor
+(?i)cursor(?!-based)
 (?i)antigravity
 (?i)codex
 (?i)openai
@@ -297,6 +297,7 @@ Each of the 23 pieces carries the text of baseline `519cc2a`, with these changes
 | `pr-review` | `` `general-purpose` `` becomes a term |
 | `bootstrap` | The sentence on area files, the step 0 passage on instruction files, and "the **Explore** agent" become terms. The step 0 heading reads "An `AGENTS.md`, or an instruction file of the harness's own, already exists". A license step is added (rule 13) |
 | `spec` | The example `.claude/context/` is removed from "Where specs live" |
+| `spec-writing` | The example `.claude/context/<ID>.md` is removed from "Location" |
 | `closeout` | Step 5 "Memory" and the `Memory` line of the output block are removed. The description becomes `Check what the delivery gate does not — surfaces, docs, traceability, security debt — before the commit` |
 | `pr-review`, `spec-writing`, `spec`, `epic` | Translated (rule 10) |
 
