@@ -10,13 +10,14 @@ This command does **not** design. If the spec is not closed, it stops — writin
 
 ## 1. Gate — refuse an open spec
 
-Read the spec and check, in this order. Any failure stops the command with the exact reason:
+Read the spec and check, in this order. Any failure stops the command with the exact reason. In a
+repository whose docs are not in English, the status and the headings below are read in that language:
 
-- `Status: fechada` in the header.
-- No `TBD`, `???`, `a definir`, `talvez`, or question mark in a declarative sentence.
-- `## Quebra em Tasks` exists, is non-empty, and every row has a title, a scope, and an acceptance
+- `Status: closed` in the header.
+- No `TBD`, `???`, `to be defined`, `maybe`, or question mark in a declarative sentence.
+- `## Task breakdown` exists, is non-empty, and every row has a title, a scope, and an acceptance
   criterion.
-- Every `Depende de` value names a task number that exists in the table.
+- Every `Depends on` value names a task number that exists in the table.
 - Every Gherkin scenario in the spec is claimed by at least one task.
 
 Report which check failed and what to fix. Do not partially publish.
@@ -36,21 +37,23 @@ Report which check failed and what to fix. Do not partially publish.
 A title is only the name of the work. Hierarchy is the native parent and grouping is the label, so no
 title carries a prefix like `[EPIC]` that repeats them — even where older issues in the repo do.
 
+The bodies are templated in English and filled in the repository's doc language.
+
 **Epic (parent):**
 
 ```markdown
-<Uma frase: o que a feature entrega e para quem.>
+<One sentence: what the feature delivers and for whom.>
 
-**Spec:** `<caminho do arquivo no repo>`
+**Spec:** `<path of the file in the repo>`
 
-## Escopo
-<Os 3–6 comportamentos que a spec fecha.>
+## Scope
+<The 3–6 behaviors the spec closes.>
 
-## Fora de escopo
-<Copiado da seção da spec.>
+## Out of scope
+<Copied from the spec's section.>
 
 ## Tasks
-<Deixe vazio — as sub-issues nativas do GitHub preenchem esta lista sozinhas.>
+<Leave empty — GitHub's native sub-issues fill this list on their own.>
 ```
 
 **Each sub-issue** is one delivery — reviewed in one sitting and committed alone, never a micro-task.
@@ -58,21 +61,21 @@ Its sections mirror what the epic's PR will ask for, so the PR body is already w
 code is:
 
 ```markdown
-## Contexto
-<Regra(s) de negócio da spec que esta task implementa, com o número.> — spec: `<caminho>`
+## Context
+<Business rule(s) of the spec this task implements, with the number.> — spec: `<path>`
 
-## Escopo
-<O que entra. Arquivos/camada que a task toca.>
+## Scope
+<What goes in. Files/layer the task touches.>
 
-## Critério de aceite
-<O(s) cenário(s) Gherkin da spec, copiados na íntegra.>
+## Acceptance criterion
+<The spec's Gherkin scenario(s), copied in full.>
 
-## Possíveis impactos
-<O que mais no sistema esta mudança toca.>
+## Possible impacts
+<What else in the system this change touches.>
 
-## Como testar
-1. <passo>
-2. <passo>
+## How to test
+1. <step>
+2. <step>
 ```
 
 ## 4. Show me everything, then wait
@@ -82,9 +85,9 @@ Nothing is created before I say so — approving the plan is not approving the p
 
 ## 5. Publish
 
-1. Update the existing epic's body: `gh issue edit <numero-do-epic> --body-file ...`.
+1. Update the existing epic's body: `gh issue edit <epic-number> --body-file ...`.
 2. For each task, **in dependency order**:
-   `gh issue create --title ... --body-file ... --parent <numero-do-epic> --label ... --project "<project title>"`
+   `gh issue create --title ... --body-file ... --parent <epic-number> --label ... --project "<project title>"`
    `--parent` creates a real GitHub sub-issue — do not fake the link with a checklist.
 3. Set each task's `Sprint` to the current iteration and its Status to Todo:
    `gh project item-edit --id <item-id> --project-id <project-id> --field-id <field-id> --iteration-id <iteration-id>`,
@@ -94,7 +97,7 @@ Nothing is created before I say so — approving the plan is not approving the p
 
 ## 6. Close the loop
 
-Update the spec in place: `Status: publicada`, `Epic: #N`, and one column in `Quebra em Tasks` carrying
+Update the spec in place: `Status: published`, `Epic: #N`, and one column in `Task breakdown` carrying
 each task's issue number. Show me the diff and get approval before committing it — the same rule as any
 other commit.
 

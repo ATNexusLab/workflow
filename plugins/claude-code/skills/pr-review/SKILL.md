@@ -1,103 +1,104 @@
 ---
-description: Revisar o PR de outra pessoa — briefing (para quê / o quê / como) + achados explicados, sem o que outro PR já resolveu
-argument-hint: "[número do PR ou URL] [--only sec|perf|arch|maint]"
+description: Review someone else's PR — a briefing (what for / what / how) plus explained findings, without what another PR already solved
+argument-hint: "[PR number or URL] [--only sec|perf|arch|maint]"
 ---
 
-Revisar o PR: $ARGUMENTS
+Review the PR: $ARGUMENTS
 
-Este comando **explica o PR antes de julgá-lo** e **nunca publica nada no GitHub**. A saída é um
-briefing em PT-BR no chat, para eu ler e então comentar por conta própria. `gh pr review`,
-`gh pr comment`, `gh pr merge`, `gh pr edit` e `git push` estão proibidos aqui, mesmo que a saída
-pareça pedir por eles.
+This command **explains the PR before judging it** and **never publishes anything on GitHub**. The output
+is a briefing in the repository's doc language in the chat, for me to read and then comment on my own.
+`gh pr review`, `gh pr comment`, `gh pr merge`, `gh pr edit`, and `git push` are forbidden here, even if
+the output seems to ask for them.
 
-## Fase 0 — preparar
+## Phase 0 — prepare
 
-1. Árvore suja (`git status --porcelain` não vazio) → **parar** e dizer o que há pendente. Não
-   guardar em stash, não descartar.
+1. Dirty tree (`git status --porcelain` not empty) → **stop** and say what is pending. Do not stash,
+   do not discard.
 2. `git fetch origin --prune`.
 3. `gh pr view <n> --json number,title,body,author,baseRefName,headRefName,isDraft,commits,files,closingIssuesReferences,url`.
-4. Sinais de experimento — draft, dias parado, sem issue ligada, autor automatizado, pasta nova
-   isolada → perguntar em uma linha se o PR é para valer antes de auditar.
+4. Signs of an experiment — draft, idle for days, no linked issue, automated author, a new isolated
+   folder → ask in one line whether the PR is for real before auditing.
 5. `gh pr checkout <n>`.
-6. `BASE=origin/<baseRefName>` — a base é a **declarada pelo PR**, nunca `main` presumida.
+6. `BASE=origin/<baseRefName>` — the base is the one **the PR declares**, never an assumed `main`.
    `MERGE_BASE=$(git merge-base $BASE HEAD)`.
-7. O diff de revisão é **`git diff $MERGE_BASE...HEAD`** e só ele. Nada do que a base andou depois
-   entra como autoria do PR.
+7. The review diff is **`git diff $MERGE_BASE...HEAD`** and nothing else. Nothing the base moved on to
+   afterwards counts as the PR's authorship.
 
-No fim do comando, eu fico na branch do PR — dizer isso em uma linha, para eu já poder rodar a
-aplicação.
+At the end of the command, I stay on the PR's branch — say so in one line, so I can already run the
+application.
 
-## Fase 1 — briefing
+## Phase 1 — briefing
 
-Escrito para quem nunca viu o PR. Nesta ordem:
+Written for someone who has never seen the PR. In this order:
 
-**Para quê** — o objetivo em 2–3 linhas, tirado da descrição, da issue linkada
-(`closingIssuesReferences`, lida com `gh issue view`) e das mensagens de commit. Cada afirmação sai
-marcada `[declarado]` quando veio do autor ou `[inferido]` quando foi deduzida do diff. Nunca
-apresentar dedução do diff como intenção declarada do autor.
+**What for** — the goal in 2–3 lines, taken from the description, the linked issue
+(`closingIssuesReferences`, read with `gh issue view`), and the commit messages. Each statement is
+marked `[declared]` when it came from the author or `[inferred]` when it was deduced from the diff. Never
+present a deduction from the diff as the author's declared intent.
 
-**O que mudou** — por módulo ou área, uma linha por grupo. Nunca uma lista de arquivos soltos.
+**What changed** — by module or area, one line per group. Never a list of loose files.
 
-**Como** — as decisões de implementação que o autor tomou: o padrão que escolheu, onde colocou o
-código, o que reusou contra o que reescreveu, e os pontos onde teria sido razoável fazer diferente.
-Esta é a seção que eu não consigo extrair sozinho lendo o diff no GitHub.
+**How** — the implementation decisions the author made: the pattern they chose, where they put the
+code, what they reused against what they rewrote, and the points where doing it differently would have
+been reasonable. This is the section I cannot extract on my own by reading the diff on GitHub.
 
-**Perfil de risco** — quantidade de arquivos, camadas atravessadas, e quais superfícies sensíveis o
-PR toca: auth, autorização, migração de banco, dinheiro, env/segredos, upload, boundary
-server/client.
+**Risk profile** — number of files, layers crossed, and which sensitive surfaces the PR touches: auth,
+authorization, database migration, money, env/secrets, upload, the server/client boundary.
 
-## Fase 2 — defasagem da base
+## Phase 2 — base drift
 
-`git log --oneline $MERGE_BASE..$BASE -- <arquivos do PR>`
+`git log --oneline $MERGE_BASE..$BASE -- <the PR's files>`
 
-Lista os arquivos em que a base andou depois do ponto de partida. Serve a dois propósitos: avisar se
-o PR precisa de rebase, e alimentar o filtro da Fase 4.
+Lists the files where the base moved on after the starting point. It serves two purposes: warning that
+the PR needs a rebase, and feeding the filter of Phase 4.
 
-## Fase 3 — achados
+## Phase 3 — findings
 
-Dispara os subagentes do `/tightship:audit` **em paralelo, numa só mensagem**, todos com o mesmo alvo:
-`git diff $MERGE_BASE...HEAD`. `--only <eixo>` restringe a rodada.
+Dispatch the subagents of `/tightship:audit` **in parallel, in a single message**, all with the same target:
+`git diff $MERGE_BASE...HEAD`. `--only <axis>` narrows the round.
 
-| Eixo | Lente |
+| Axis | Lens |
 |---|---|
 | **sec** | `tightship:security-audit` |
 | **perf** | `tightship:performance-analysis` |
 | **arch** | `tightship:architecture-reading` |
-| **maint** | **Code I write** do contrato |
+| **maint** | **Code I write** of the contract |
 
-Um `general-purpose` por eixo, read-only, cada um carregando a lente antes de ler o diff.
+One `general-purpose` per axis, read-only, each loading its lens before reading the diff.
 
-Valem as lentes condicionais do `/tightship:audit`: contrato de API → `tightship:api-design`; camada de dados →
-`tightship:database-design`; superfície de UI → `tightship:frontend-architecture`. A lente é o ângulo, nunca o teto.
+The conditional lenses of `/tightship:audit` apply: API contract → `tightship:api-design`; data layer →
+`tightship:database-design`; UI surface → `tightship:frontend-architecture`. The lens is the angle, never the ceiling.
 
-## Fase 4 — filtro temporal
+## Phase 4 — time filter
 
-**Nenhum achado chega ao relatório sem passar pelos dois testes.** Este é o ponto do comando: tempo
-gasto discutindo o que já foi tratado é tempo perdido.
+**No finding reaches the report without passing both tests.** This is the point of the command: time
+spent discussing what was already handled is time lost.
 
-1. **Já resolvido na base atual** — as linhas do achado mudaram entre `$MERGE_BASE` e `$BASE`?
-   `git log -L<início>,<fim>:<arquivo> $MERGE_BASE..$BASE`, com `git log -S'<trecho>' $MERGE_BASE..$BASE`
-   como rede para código que se moveu. Ler a mudança: se ela cobre o achado, descartar como
-   *resolvido em `<sha>` (PR #N)*.
-2. **Já sendo tratado em PR aberto** — `gh pr list --state open --json number,title,headRefName,files`.
-   Cruzar por arquivo com os arquivos do achado; para cada PR que cruza, ler **apenas os hunks
-   sobrepostos** de `gh pr diff <m>`. Se ataca o mesmo ponto, descartar como *sendo tratado em #M*.
-   Um PR aberto que já ataca o problema basta — o problema já está em movimento em outro lugar.
+1. **Already solved on the current base** — did the finding's lines change between `$MERGE_BASE` and `$BASE`?
+   `git log -L<start>,<end>:<file> $MERGE_BASE..$BASE`, with `git log -S'<snippet>' $MERGE_BASE..$BASE`
+   as a net for code that moved. Read the change: if it covers the finding, discard it as
+   *solved in `<sha>` (PR #N)*.
+2. **Already being handled in an open PR** — `gh pr list --state open --json number,title,headRefName,files`.
+   Cross by file with the finding's files; for each PR that crosses, read **only the overlapping hunks**
+   of `gh pr diff <m>`. If it attacks the same point, discard it as *being handled in #M*.
+   One open PR that already attacks the problem is enough — the problem is already moving elsewhere.
 
-Descartado não é apagado: vai para a seção **Descartados e por quê**, no fim do relatório, com o
-motivo e a referência. Fora do caminho, mas auditável.
+Discarded is not deleted: it goes to the **Discarded and why** section, at the end of the report, with
+the reason and the reference. Out of the way, but auditable.
 
-## Fase 5 — saída
+## Phase 5 — output
 
-Cada achado sobrevivente, ranqueado por severidade entre eixos e deduplicado (o mesmo código costuma
-tropeçar em mais de um eixo — mantido uma vez, marcado com todos):
+Each surviving finding, ranked by severity across axes and deduplicated (the same code often trips
+more than one axis — kept once, marked with all of them):
 
-- **o que é** — uma frase
-- **por que importa neste PR** — o efeito concreto, não a regra genérica
-- **onde** — `path:linha` com o trecho
-- **comentário pronto** — o texto em PT-BR para eu colar no GitHub, já no tom de review
-- **escopo** — `no escopo` quando o PR causou o problema ou o tornou alcançável; `adjacente` quando é
-  pré-existente e o PR só encostou. Adjacente vira issue, e quem decide sou eu — o comando propõe.
+- **what it is** — one sentence
+- **why it matters in this PR** — the concrete effect, not the generic rule
+- **where** — `path:line` with the snippet
+- **ready comment** — the text in the repository's doc language for me to paste on GitHub, already in a
+  review tone
+- **scope** — `in scope` when the PR caused the problem or made it reachable; `adjacent` when it is
+  pre-existing and the PR only brushed against it. Adjacent becomes an issue, and the one who decides is
+  me — the command proposes.
 
-Fechar com **veredito recomendado** em uma linha: aprovar · pedir mudanças · conversar antes. É
-recomendação. A ação no GitHub é sempre minha.
+Close with a **recommended verdict** in one line: approve · request changes · talk first. It is a
+recommendation. The action on GitHub is always mine.

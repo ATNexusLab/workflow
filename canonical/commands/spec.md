@@ -54,19 +54,19 @@ the code.
 
 ## 4. Break it into tasks
 
-Propose `## Quebra em Tasks` and walk me through it before finalizing. Slicing rules are in
+Propose `## Task breakdown` and walk me through it before finalizing. Slicing rules are in
 `templates.md` — vertical slices, ordered by dependency, every scenario owned by a task.
 
 ## 5. Close it
 
 Run the closed-spec gate from the skill line by line and report the result. If it passes, set
-`Status: fechada` and tell me the spec is ready for `{{command:epic}}`. If it does not, name exactly what is still
-open — never set `fechada` on a spec that has a soft spot.
+`Status: closed` and tell me the spec is ready for `{{command:epic}}`. If it does not, name exactly what is still
+open — never set `closed` on a spec that has a soft spot.
 
 Then close the loop with the requirements: for every question in `docs/requirements/open-questions.md` this spec
 answered, delete the question and put a link to this spec in its place. Show me that diff separately.
 
-And with the global docs: what the spec's `Impacto na arquitetura` and `Impacto no modelo de dados`
+And with the global docs: what the spec's `Architecture impact` and `Data model impact`
 sections declare is applied to `docs/architecture/`, `docs/data-model/`, and their diagrams, marked
 with the feature's milestone. Show me that diff separately too. The feature's PR later makes the map
 match what was built.
